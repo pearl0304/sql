@@ -222,4 +222,48 @@ CREATE TABLE `km_product_review` (
 	`rating`		TINYINT,
 	`ip`			VARCHAR(20),
 	`rdate`		DATETIME
-);ljj
+);
+
+
+
+SELECT c1.code1,c2.code2,c1.title AS tit1, c2.title AS tit2
+FROM `km_cate1` AS c1
+JOIN `km_cate2` AS c2
+ON c1.code1=c2.code1
+Order BY c1.code1,c2.code2;
+
+
+#임시 조정 
+UPDATE `km_product` SET `hit` = CEIL(RAND()*100);
+UPDATE `km_product` SET `score` = CEIL(RAND()*5);
+UPDATE `km_product` SET `sold` = CEIL(RAND()*1000);
+
+#베스트 상품 
+(SELECT * FROM `km_product` Order BY `sold` DESC LIMIT 5)
+UNION
+
+#히트상품
+(SELECT * FROM `km_product` Order BY `hit` DESC LIMIT 8)
+UNION
+#추천상품
+(SELECT * FROM `km_product` Order BY `score` DESC LIMIT 8)
+UNION
+#최신상품 
+(SELECT * FROM `km_product` Order BY `rdate` DESC LIMIT 8)
+UNION
+#할인상품
+(SELECT * FROM `km_product` Order BY `discount` DESC LIMIT 8);
+
+#베스트 상품할인 
+SELECT *,FLOOR( price*(1-discount/100)) AS `salePrice` FROM `km_product` Order BY `sold` DESC LIMIT 5;
+
+SELECT c1.title AS tit1, c2.title AS tit2 FROM `km_cate1` AS c1
+JOIN `km_cate2` AS c2
+ON c1.code1=c2.code1
+WHERE c1.code1=2 AND c2.code2=1;
+
+SELECT a.*, b.title as tit1, c.title AS tit2, FLOOR(price *(1-discount/100)) AS `salePrice`
+FROM `km_product` AS a
+JOIN `km_cate1` AS b ON a.cate1 = b.code1
+JOIN `km_cate2` AS c ON a.cate2=c.code1 AND a.cate2 = c.code2
+WHERE `code`=62;
