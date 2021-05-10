@@ -267,3 +267,12 @@ FROM `km_product` AS a
 JOIN `km_cate1` AS b ON a.cate1 = b.code1
 JOIN `km_cate2` AS c ON a.cate2=c.code1 AND a.cate2 = c.code2
 WHERE `code`=62;
+							    
+#약관조회							    
+SELECT * FROM `km_terms`;
+
+#장바구니 목록 -> 주문하기 테이블로 이동
+INSERT INTO `km_product_order` 
+(`uid`,`code`,`name`,`count`,`price`,`discount`,`point`,`delivery`,`total`,`rdate`)
+SELECT `uid`,`code`,`name`,`count`,`price`,`discount`,`point`,`delivery`,`total`,NOW()
+FROM `km_product_cart` WHERE `seq`=IN(,);
